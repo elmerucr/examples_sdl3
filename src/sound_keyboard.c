@@ -44,7 +44,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     SDL_SetRenderLogicalPresentation(renderer, 320, 180, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
     /* We're just playing a single thing here, so we'll use the simplified option.
-       We are always going to feed audio in as mono, float32 data at 8000Hz.
+       We are always going to feed audio in as mono, float32 data at 48000Hz.
        The stream will convert it to whatever the hardware wants on the other side. */
     spec.channels = 1;
     spec.format = SDL_AUDIO_F32;
@@ -76,8 +76,10 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 	if (event->type == SDL_EVENT_KEY_DOWN) {
 		switch (event->key.scancode) {
 		case SDL_SCANCODE_F:
-			fullscreen = !fullscreen;
-			SDL_SetWindowFullscreen(window, fullscreen);
+			if (alt_pressed) {
+				fullscreen = !fullscreen;
+				SDL_SetWindowFullscreen(window, fullscreen);
+			}
 			break;
 		default:
 			break;
